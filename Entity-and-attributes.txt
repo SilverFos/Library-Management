@@ -1,0 +1,25 @@
+~Entities and Attributes~
+♫ User:
+Name
+UserID
+BirthDate
+PhoneNumber
+Email
+
+♫ Books:
+Name
+Author
+BookID
+Availability
+Cost
+
+♫ Borrowing Record:
+UserID (Foreign Key)
+BookID (Foreign Key)
+DueDate
+
+♫ Library Staff:
+Name
+StaffID
+PhoneNumber
+Email
