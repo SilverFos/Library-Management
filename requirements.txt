@@ -1,0 +1,13 @@
+~Requirements for Library Management System~
+
+♫ User Registration and Management:
+The system should allow users to register with their details (Name, User ID, Phone Number, Email) and store this information securely.
+
+♫ Book Management:
+The system should manage information about books, including their availability, author, and cost. It should update availability when a book is borrowed or returned.
+
+♫ Borrowing and Due Management:
+The system should track borrowing records, linking users to the books they’ve borrowed, along with the due date for returning the books.
+
+♫ Fine Calculation:
+The system should calculate fines for overdue books based on the borrowing record, update the user’s fine record, and allow staff to mark fines as paid.
