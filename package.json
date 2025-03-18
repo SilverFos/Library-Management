@@ -1,0 +1,24 @@
+{
+  "name": "library-management",
+  "version": "1.0.0",
+  "description": "DBMS mini-project for college.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SilverFos/Library-Management.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SilverFos/Library-Management/issues"
+  },
+  "homepage": "https://github.com/SilverFos/Library-Management#readme",
+  "dependencies": {
+    "express": "^4.21.2",
+    "mysql2": "^3.13.0"
+  }
+}
