@@ -1,1 +1,14 @@
-<button> sign in <\button>
+
+<style>
+.sign-in{ background-color: grey;
+color: white;
+border: none;
+height:30px;
+wight:70px;
+border-radius:4px;
+cursor: pointer;
+</style>
+
+
+
+<button class="sign-in> sign in </button>
