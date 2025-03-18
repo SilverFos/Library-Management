@@ -1,26 +1,32 @@
-
+<p> Don't have a account? sign up now</p>
 <style>
-.sign-in{ background-color: grey;
-color: white;
-border: none;
+.sign-up{ background-color: white;
+color: black;
+border-style: solid;
+border-color:black;
+border-width: 2px;
 height:30px;
 wight:70px;
 border-radius:4px;
 cursor: pointer;
 margine-right:10px;
-transition: opacity 0.20s
+transition: background-color 0.20s
+color 0.20s
 }
-.sign-in:hover{
-opacity:0.8;
+.sign-up:hover{
+background-color: black;
+color: white;
 }
-.sign-in:active{
+.sign-up:active{
 opacity:0.5;
 }
 
 .login{
 backgroud-color:grey;
 color: white;
-border: none
+border-style: solid;
+border-color:white;
+border-width: 2px;
 height:30px;
 wight: 70px;
 border-radius:4px;
@@ -28,7 +34,8 @@ cursor: pointer;
 transition: opacity 0.20s
 } 
 .login:hover{
-opacity:0.8;
+backgroud-color: white;
+color: grey;
 }
 .login:active{
 opacity:0.5;
@@ -37,5 +44,5 @@ opacity:0.5;
 
 
 
-<button class="sign-in> sign in </button>
+<button class="sign-up"> sign up </button>
 <button class="login">login</button>
