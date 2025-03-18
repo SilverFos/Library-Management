@@ -7,8 +7,35 @@ height:30px;
 wight:70px;
 border-radius:4px;
 cursor: pointer;
+margine-right:10px;
+transition: opacity 0.20s
+}
+.sign-in:hover{
+opacity:0.8;
+}
+.sign-in:active{
+opacity:0.5;
+}
+
+.login{
+backgroud-color:grey;
+color: white;
+border: none
+height:30px;
+wight: 70px;
+border-radius:4px;
+cursor: pointer;
+transition: opacity 0.20s
+} 
+.login:hover{
+opacity:0.8;
+}
+.login:active{
+opacity:0.5;
+}
 </style>
 
 
 
 <button class="sign-in> sign in </button>
+<button class="login">login</button>
