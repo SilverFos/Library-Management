@@ -54,8 +54,3 @@ INSERT INTO BorrowingRecords (UserID, BookID, StaffID, DueDate)
 VALUES 
 (1, 3, 1, '2025-03-25'),
 (2, 1, 2, '2025-03-30');
-
-SELECT * FROM Users;
-SELECT * FROM Books;
-SELECT * FROM LibraryStaff;
-
