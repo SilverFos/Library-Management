@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f6ff;
+            color: #000;
+        }
+
+        .navbar {
+            background-color: #00264d;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .menu-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+        }
+
+        .section {
+            padding: 2rem;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        #searchInput, #sortSelect, button {
+            padding: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .books-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .book-card {
+            background-color: #e6f0ff;
+            border: 1px solid #cce0ff;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        form input, form button {
+            display: block;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        #searchResults {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+    <script defer>
+        const books = [
+            { name: "Book One", author: "Author A", id: "B1", available: true, cost: 100 },
+            { name: "Book Two", author: "Author B", id: "B2", available: false, cost: 150 },
+            { name: "Book Three", author: "Author C", id: "B3", available: true, cost: 200 },
+            { name: "Book Four", author: "Author D", id: "B4", available: true, cost: 175 },
+            { name: "Book Five", author: "Author E", id: "B5", available: false, cost: 120 },
+            { name: "Book Six", author: "Author F", id: "B6", available: true, cost: 90 }
+        ];
+
+        const librarians = [];
+        let currentLibrarian = null;
+
+        function searchBooks() {
+            const searchValue = document.getElementById("searchInput").value.toLowerCase();
+            const sortValue = document.getElementById("sortSelect").value;
+            let filteredBooks = books.filter(book => 
+                book.name.toLowerCase().includes(searchValue) ||
+                book.author.toLowerCase().includes(searchValue)
+            );
+
+            if (filteredBooks.length === 0) {
+                document.getElementById("searchResults").textContent = "The Book or author you searched for is not available";
+                document.querySelector(".books-display").innerHTML = "";
+                return;
+            }
+
+            if (sortValue) {
+                filteredBooks.sort((a, b) => {
+                    if (sortValue === "name") return a.name.localeCompare(b.name);
+                    if (sortValue === "author") return a.author.localeCompare(b.author);
+                    if (sortValue === "availability") return b.available - a.available;
+                });
+            }
+
+            document.getElementById("searchResults").textContent = "";
+
+            const display = document.querySelector(".books-display");
+            display.innerHTML = "";
+
+            filteredBooks.forEach(book => {
+                const card = document.createElement("div");
+                card.className = "book-card";
+                card.innerHTML = `<h3>${book.name}</h3><p>${book.author}</p><p>${book.available ? "Available" : "Not Available"}</p>`;
+                card.onclick = () => {
+                    document.getElementById("borrower").classList.remove("hidden");
+                    document.getElementById("home").classList.add("hidden");
+                    document.getElementById("bookIdInput").value = book.id;
+                };
+                display.appendChild(card);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("borrowForm").addEventListener("submit", function(e) {
+                e.preventDefault();
+                const userId = document.getElementById("userIdInput").value;
+                const bookId = document.getElementById("bookIdInput").value;
+                const book = books.find(b => b.id === bookId);
+                const borrowDetails = document.getElementById("borrowDetails");
+
+                if (book && userId) {
+                    borrowDetails.innerHTML = `
+                        <p>User ID: ${userId}</p>
+                        <p>Book ID: ${bookId}</p>
+                        <p>Book Name: ${book.name}</p>
+                        <p>Author: ${book.author}</p>
+                        <p>Due Date: ${new Date(Date.now() + 7*24*60*60*1000).toLocaleDateString()}</p>
+                    `;
+                } else {
+                    borrowDetails.textContent = "Invalid User ID or Book ID";
+                }
+            });
+
+            document.getElementById("loginForm").addEventListener("submit", function(e) {
+                e.preventDefault();
+                const staffId = this.elements[0].value;
+                const password = this.elements[1].value;
+                const librarian = librarians.find(lib => lib.staffId === staffId && lib.password === password);
+                if (librarian) {
+                    currentLibrarian = librarian;
+                    alert("Login successful!");
+                    showProfile();
+                } else {
+                    alert("Invalid credentials");
+                }
+            });
+
+            document.getElementById("signupForm").addEventListener("submit", function(e) {
+                e.preventDefault();
+                const name = this.elements[0].value;
+                const staffId = this.elements[1].value;
+                const phone = this.elements[2].value;
+                const email = this.elements[3].value;
+                const password = prompt("Set a password:");
+                librarians.push({ name, staffId, phone, email, password });
+                alert("Signup successful! Now login.");
+                this.reset();
+            });
+        });
+
+        function showProfile() {
+            const profileSection = document.getElementById("profile");
+            profileSection.classList.remove("hidden");
+            profileSection.innerHTML = `
+                <h2>Welcome, ${currentLibrarian.name}</h2>
+                <p>Email: <input value="${currentLibrarian.email}" onchange="updateProfile('email', this.value)"></p>
+                <p>Phone: <input value="${currentLibrarian.phone}" onchange="updateProfile('phone', this.value)"></p>
+            `;
+        }
+
+        function updateProfile(field, value) {
+            currentLibrarian[field] = value;
+            alert("Profile updated");
+        }
+    </script>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">Library</div>
+        <nav>
+            <ul id="menu-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#login">Login</a></li>
+                <li><a href="#signup">Signup</a></li>
+                <li><a href="#help">Help</a></li>
+                <li><a href="#about">About Us</a></li>
+            </ul>
+        </nav>
+        <div class="menu-icon">☰</div>
+    </header>
+
+    <section id="home" class="section">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search books, authors, genres...">
+            <select id="sortSelect">
+                <option value="">Sort by</option>
+                <option value="name">Name</option>
+                <option value="author">Author</option>
+                <option value="availability">Availability</option>
+            </select>
+            <button onclick="searchBooks()">Search</button>
+        </div>
+        <div id="searchResults"></div>
+        <div class="books-display"></div>
+    </section>
+
+    <section id="login" class="section hidden">
+        <h2>Librarian Login</h2>
+        <form id="loginForm">
+            <input type="text" placeholder="Staff ID" required>
+            <input type="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+    </section>
+
+    <section id="signup" class="section hidden">
+        <h2>Librarian Signup</h2>
+        <form id="signupForm">
+            <input type="text" placeholder="Name" required>
+            <input type="text" placeholder="Staff ID" required>
+            <input type="text" placeholder="Phone Number" required>
+            <input type="email" placeholder="Email" required>
+            <button type="submit">Signup</button>
+        </form>
+    </section>
+
+    <section id="availability" class="section hidden">
+        <h2>Book Availability</h2>
+        <div id="availabilityList"></div>
+    </section>
+
+    <section id="borrower" class="section hidden">
+        <h2>Borrower Details</h2>
+        <form id="borrowForm">
+            <input type="text" id="userIdInput" placeholder="Enter User ID">
+            <input type="text" id="bookIdInput" placeholder="Enter Book ID">
+            <button type="submit">Submit</button>
+        </form>
+        <div id="borrowDetails"></div>
+    </section>
+
+    <section id="profile" class="section hidden"></section>
+</body>
+</html>
